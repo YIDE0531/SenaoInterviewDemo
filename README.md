@@ -3,7 +3,7 @@
 這是一個用於神腦國際 Android 面試的小型展示專案，使用 Jetpack Compose 製作商品清單頁面。
 
 ## App畫面
-![Demo 動畫](https://github.com/YIDE0531/SenaoInterviewDemo/blob/master/untitled.gif)
+<img src="https://github.com/YIDE0531/SenaoInterviewDemo/blob/master/untitled.gif" width="300" height="700" />
 
 ## 🧱 專案架構
 
