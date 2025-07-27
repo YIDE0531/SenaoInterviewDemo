@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SenaoInterviewDemo</string>
+
+    <string name="loading">Loading</string>
+    <string name="loading_failed">Failed to load</string>
+    <string name="retry">重新讀取</string>
+
+    <string name="input_keyword">請輸入關鍵字</string>
+    <string name="product_detail_title">商品資訊</string>
+    <string name="price_sign">$</string>
+    <string name="product_id">商品編號: %d</string>
+    <string name="icon_back_content_description">返回</string>
+    <string name="product_image_content_description">商品圖片</string>
+    <string name="icon_favorite_content_description">加入到我的最愛</string>
+    <string name="icon_add_cart_content_description">加入到購物車</string>
+
+</resources>
