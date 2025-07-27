@@ -9,6 +9,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ProductResponse(
-    val data: List<Product>
+    val data: List<Product>,
 )
-

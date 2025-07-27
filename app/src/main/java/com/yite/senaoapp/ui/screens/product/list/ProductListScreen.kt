@@ -62,7 +62,7 @@ fun ProductListScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onItemClick: (AppRoute.ProductDetail) -> Unit,
     onAddCart: (Product) -> Unit,
-    onFavoriteClick: (Product) -> Unit
+    onFavoriteClick: (Product) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     when (uiState) {
@@ -82,7 +82,7 @@ fun ProductListScreen(
                 onFavoriteClick = onFavoriteClick,
                 onFilterSearch = {
                     viewModel.filterSearch(it)
-                }
+                },
             )
         }
         is ProductListUiState.Error -> {
@@ -90,7 +90,7 @@ fun ProductListScreen(
                 modifier = modifier.fillMaxSize(),
                 onRetryClick = {
                     viewModel.reload()
-                }
+                },
             )
         }
     }
@@ -105,66 +105,69 @@ fun ResultScreen(
     onItemClick: (AppRoute.ProductDetail) -> Unit,
     onAddCart: (Product) -> Unit,
     onFavoriteClick: (Product) -> Unit,
-    onFilterSearch: (String) -> Unit
+    onFilterSearch: (String) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
-        modifier = modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier =
+            modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                    scrolledContainerColor = MaterialTheme.colorScheme.primary,
-                ),
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                        scrolledContainerColor = MaterialTheme.colorScheme.primary,
+                    ),
                 title = {
                     CustomSearchBar(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(
-                                color = MaterialTheme.colorScheme.surfaceContainer,
-                                shape = RoundedCornerShape(50)
-                            )
-                            .padding(top = 6.dp, bottom = 6.dp, start = 8.dp, end = 8.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = MaterialTheme.colorScheme.surfaceContainer,
+                                    shape = RoundedCornerShape(50),
+                                ).padding(top = 6.dp, bottom = 6.dp, start = 8.dp, end = 8.dp),
                         value = searchQuery,
                         onValueChange = {
                             onFilterSearch.invoke(it)
-                        }
+                        },
                     )
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { contentPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .consumeWindowInsets(contentPadding)
-                .padding(horizontal = 4.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .consumeWindowInsets(contentPadding)
+                    .padding(horizontal = 4.dp),
             contentPadding = contentPadding,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
                 HorizontalDivider(
                     thickness = 4.dp,
-                    color = Color.Transparent
+                    color = Color.Transparent,
                 )
             }
             items(
                 items = productItems,
                 key = { productItem ->
                     productItem.martId
-                }
+                },
             ) { productItem ->
                 ProductListItem(
                     productItem = productItem,
                     onItemClick = onItemClick,
                     onAddCart = onAddCart,
                     onFavoriteClick = onFavoriteClick,
-                    lazyItemScope = this
+                    lazyItemScope = this,
                 )
             }
         }
@@ -178,95 +181,102 @@ fun ProductListItem(
     onItemClick: (AppRoute.ProductDetail) -> Unit,
     onAddCart: (Product) -> Unit,
     onFavoriteClick: (Product) -> Unit,
-    lazyItemScope: LazyItemScope
+    lazyItemScope: LazyItemScope,
 ) {
     with(lazyItemScope) {
         ConstraintLayout(
-            modifier = modifier
-                .fillMaxWidth()
-                .animateItem()
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceContainer,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(top = 8.dp, bottom = 8.dp, start = 12.dp, end = 12.dp)
-                .noRippleClickable {
-                    onItemClick(
-                        AppRoute.ProductDetail(
-                            product = productItem
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .animateItem()
+                    .background(
+                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        shape = RoundedCornerShape(16.dp),
+                    ).padding(top = 8.dp, bottom = 8.dp, start = 12.dp, end = 12.dp)
+                    .noRippleClickable {
+                        onItemClick(
+                            AppRoute.ProductDetail(
+                                product = productItem,
+                            ),
                         )
-                    )
-                }
+                    },
         ) {
             val (
                 productImageRes,
                 productNameRes,
                 productPriceRes,
                 favoriteIconRes,
-                addCartIconRes
+                addCartIconRes,
             ) = createRefs()
             AsyncImage(
-                modifier = Modifier
-                    .size(width = 100.dp, height = 150.dp)
-                    .constrainAs(productImageRes) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(productNameRes.start)
-                    },
+                modifier =
+                    Modifier
+                        .size(width = 100.dp, height = 150.dp)
+                        .constrainAs(productImageRes) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(productNameRes.start)
+                        },
                 model = productItem.imageUrl,
                 contentDescription = stringResource(R.string.product_image_content_description),
             )
             Text(
-                modifier = Modifier
-                    .constrainAs(productNameRes) {
-                        top.linkTo(parent.top, margin = 16.dp)
-                        start.linkTo(productImageRes.end, margin = 16.dp)
-                        end.linkTo(parent.end)
-                        width = Dimension.fillToConstraints
-                        horizontalChainWeight = 1f
-                    },
+                modifier =
+                    Modifier
+                        .constrainAs(productNameRes) {
+                            top.linkTo(parent.top, margin = 16.dp)
+                            start.linkTo(productImageRes.end, margin = 16.dp)
+                            end.linkTo(parent.end)
+                            width = Dimension.fillToConstraints
+                            horizontalChainWeight = 1f
+                        },
                 text = productItem.martName,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
             Text(
-                modifier = Modifier
-                    .constrainAs(productPriceRes) {
-                        top.linkTo(productNameRes.bottom, margin = 16.dp)
-                        start.linkTo(productImageRes.end, margin = 16.dp)
-                    },
+                modifier =
+                    Modifier
+                        .constrainAs(productPriceRes) {
+                            top.linkTo(productNameRes.bottom, margin = 16.dp)
+                            start.linkTo(productImageRes.end, margin = 16.dp)
+                        },
                 text = stringResource(R.string.price_sign) + productItem.getFormattedFinalPrice(),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
             )
             Icon(
-                modifier = Modifier
-                    .size(24.dp)
-                    .constrainAs(favoriteIconRes) {
-                        end.linkTo(addCartIconRes.start, margin = 8.dp)
-                        bottom.linkTo(parent.bottom)
-                    }.noRippleClickable {
-                        onFavoriteClick.invoke(productItem)
-                    },
-                painter = painterResource(
-                    id = R.drawable.icon_favorite,
-                ),
+                modifier =
+                    Modifier
+                        .size(24.dp)
+                        .constrainAs(favoriteIconRes) {
+                            end.linkTo(addCartIconRes.start, margin = 8.dp)
+                            bottom.linkTo(parent.bottom)
+                        }.noRippleClickable {
+                            onFavoriteClick.invoke(productItem)
+                        },
+                painter =
+                    painterResource(
+                        id = R.drawable.icon_favorite,
+                    ),
                 contentDescription = stringResource(R.string.icon_favorite_content_description),
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.colorScheme.secondary,
             )
             Icon(
-                modifier = Modifier
-                    .size(24.dp)
-                    .constrainAs(addCartIconRes) {
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    }.noRippleClickable {
-                        onAddCart.invoke(productItem)
-                    },
-                painter = painterResource(
-                    id = R.drawable.icon_add_cart,
-                ),
+                modifier =
+                    Modifier
+                        .size(24.dp)
+                        .constrainAs(addCartIconRes) {
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        }.noRippleClickable {
+                            onAddCart.invoke(productItem)
+                        },
+                painter =
+                    painterResource(
+                        id = R.drawable.icon_add_cart,
+                    ),
                 contentDescription = stringResource(R.string.icon_add_cart_content_description),
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.colorScheme.secondary,
             )
         }
     }
@@ -275,23 +285,26 @@ fun ProductListItem(
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
+        modifier = modifier,
     ) {
         AsyncImage(
-            modifier = modifier
-                .wrapContentSize()
-                .align(Alignment.Center)
-                .size(64.dp),
+            modifier =
+                modifier
+                    .wrapContentSize()
+                    .align(Alignment.Center)
+                    .size(64.dp),
             model = R.drawable.icon_loading,
-            imageLoader = ImageLoader.Builder(LocalContext.current)
-                .components {
-                    if ( SDK_INT >= 28 ) {
-                        add(AnimatedImageDecoder.Factory())
-                    } else {
-                        add(GifDecoder.Factory())
-                    }
-                }.build(),
-            contentDescription = stringResource(R.string.loading)
+            imageLoader =
+                ImageLoader
+                    .Builder(LocalContext.current)
+                    .components {
+                        if (SDK_INT >= 28) {
+                            add(AnimatedImageDecoder.Factory())
+                        } else {
+                            add(GifDecoder.Factory())
+                        }
+                    }.build(),
+            contentDescription = stringResource(R.string.loading),
         )
     }
 }
@@ -299,22 +312,25 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 @Composable
 fun ErrorScreen(
     modifier: Modifier = Modifier,
-    onRetryClick: () -> Unit
+    onRetryClick: () -> Unit,
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
+            painter = painterResource(id = R.drawable.ic_connection_error),
+            contentDescription = "",
         )
         Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
         Button(
-            modifier = Modifier
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .padding(16.dp),
             onClick = {
-                onRetryClick.invoke()            }
+                onRetryClick.invoke()
+            },
         ) {
             Text(text = stringResource(R.string.retry))
         }
@@ -339,7 +355,7 @@ fun ResultScreenPreview() {
             onItemClick = {},
             onAddCart = {},
             onFavoriteClick = {},
-            onFilterSearch = {}
+            onFilterSearch = {},
         )
     }
 }
@@ -348,7 +364,7 @@ fun ResultScreenPreview() {
 @Composable
 fun ProductListItemPreview(
     @PreviewParameter(PreviewParameterProduct::class)
-    productInfo: Product
+    productInfo: Product,
 ) {
     SenaoInterviewDemoTheme {
         LazyColumn(modifier = Modifier.padding(8.dp)) {
@@ -359,7 +375,7 @@ fun ProductListItemPreview(
                     onItemClick = {},
                     onAddCart = {},
                     onFavoriteClick = {},
-                    lazyItemScope = this
+                    lazyItemScope = this,
                 )
             }
         }
@@ -371,7 +387,7 @@ fun ProductListItemPreview(
 fun ErrorScreenPreview() {
     SenaoInterviewDemoTheme {
         ErrorScreen(
-            onRetryClick = {}
+            onRetryClick = {},
         )
     }
 }

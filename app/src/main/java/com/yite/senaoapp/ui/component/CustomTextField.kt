@@ -22,18 +22,20 @@ fun CustomTextField(
     onValueChange: (String) -> Unit,
 ) {
     BasicTextField(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
-        textStyle = textStyle.copy(
-            color = MaterialTheme.colorScheme.onPrimary
-        ),
+        textStyle =
+            textStyle.copy(
+                color = MaterialTheme.colorScheme.onPrimary,
+            ),
         decorationBox = { innerTextField ->
             Row(
                 modifier,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (leadingIcon != null) leadingIcon()
                 Box(Modifier.weight(1f)) {
@@ -41,13 +43,13 @@ fun CustomTextField(
                         Text(
                             text = placeholderText,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     innerTextField()
                 }
                 if (trailingIcon != null) trailingIcon()
             }
-        }
+        },
     )
 }

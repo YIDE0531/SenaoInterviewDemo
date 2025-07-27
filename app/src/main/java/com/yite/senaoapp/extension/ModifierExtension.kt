@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 
-
 /**
  * 使元件可點擊，但移除ripple (漣漪效果)。
  *
@@ -17,14 +16,15 @@ fun Modifier.noRippleClickable(
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
-    onClick: () -> Unit
-): Modifier = this.then(
-    Modifier.clickable(
-        interactionSource = null,
-        indication = null,
-        enabled = enabled,
-        onClickLabel = onClickLabel,
-        role = role,
-        onClick = onClick
+    onClick: () -> Unit,
+): Modifier =
+    this.then(
+        Modifier.clickable(
+            interactionSource = null,
+            indication = null,
+            enabled = enabled,
+            onClickLabel = onClickLabel,
+            role = role,
+            onClick = onClick,
+        ),
     )
-)

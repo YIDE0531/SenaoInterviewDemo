@@ -22,9 +22,8 @@ data class Product(
     val price: Int,
     val martShortName: String,
     val imageUrl: String,
-    val martId: Int
+    val martId: Int,
 ) {
-
     fun getFormattedFinalPrice(): String {
         val numberFormat = NumberFormat.getNumberInstance()
         val formattedPrice: String = numberFormat.format(finalPrice)

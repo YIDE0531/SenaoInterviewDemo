@@ -8,11 +8,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultProductRepository @Inject constructor(
-    private val networkDataSource: NetworkDataSource,
-) : ProductRepository {
-
-    override fun getProducts(): Flow<ProductResponse> = flow {
-        emit(networkDataSource.getProducts())
+class DefaultProductRepository
+    @Inject
+    constructor(
+        private val networkDataSource: NetworkDataSource,
+    ) : ProductRepository {
+        override fun getProducts(): Flow<ProductResponse> =
+            flow {
+                emit(networkDataSource.getProducts())
+            }
     }
-}

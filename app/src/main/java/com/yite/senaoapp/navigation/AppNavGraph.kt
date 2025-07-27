@@ -15,29 +15,30 @@ fun AppNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: AppRoute = AppRoute.ProductList,
-    navActions: AppNavigationActions = remember(navController) {
-        AppNavigationActions(navController)
-    }
+    navActions: AppNavigationActions =
+        remember(navController) {
+            AppNavigationActions(navController)
+        },
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        modifier = modifier
+        modifier = modifier,
     ) {
         composable<AppRoute.ProductList> { backStackEntry ->
             ProductListScreen(
                 onItemClick = { navActions.navigateToProductDetail(it) },
                 onAddCart = { },
-                onFavoriteClick = { }
+                onFavoriteClick = { },
             )
         }
         composable<AppRoute.ProductDetail>(
-            typeMap = AppRoute.ProductDetail.typeMap
+            typeMap = AppRoute.ProductDetail.typeMap,
         ) { backStackEntry ->
             ProductDetailScreen(
                 onBack = { navController.popBackStack() },
                 onAddCart = { },
-                onFavoriteClick = { }
+                onFavoriteClick = { },
             )
         }
     }

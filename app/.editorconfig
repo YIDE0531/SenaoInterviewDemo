@@ -1,0 +1,22 @@
+# 這個設定確保 .editorconfig 適用於所有檔案
+root = true
+
+# 這是針對 Kotlin 檔案的設定
+[*.{kt,kts}]
+
+# 以下為規則禁用設定
+# 請參考官方github找對應的rule id
+# https://github.com/pinterest/ktlint/tree/master/ktlint-ruleset-standard/src/main/kotlin/com/pinterest/ktlint/ruleset/standard
+
+# 禁用規則範例如下,移除＃即可生效
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_package-name = disabled
+ktlint_standard_filename = disabled
+ktlint_standard_max-line-length = disabled
+ktlint_standard_property-naming = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+ktlint_standard_trailing-comma-on-call-site = disabled
+# 禁用在單行程式碼後註解檢查 需要同時禁用以下規則
+ktlint_standard_discouraged-comment-location = disabled
+ktlint_standard_if-else-wrapping = disabled
+ktlint_function_naming_ignore_when_annotated_with = Composable

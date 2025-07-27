@@ -12,7 +12,6 @@ val onSurfaceVariantLight = Color.LightGray
 val surfaceContainerLight = Color.White
 val errorLight = Color.Red
 
-
 val primaryDark = Color(0xFF003366)
 val onPrimaryDark = Color.LightGray
 val secondaryDark = Color(0xFFB0BEC5)

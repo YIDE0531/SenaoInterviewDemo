@@ -21,67 +21,69 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductListViewModel @Inject constructor(
-    productRepository: ProductRepository
-) : ViewModel() {
+class ProductListViewModel
+    @Inject
+    constructor(
+        productRepository: ProductRepository,
+    ) : ViewModel() {
+        private val _searchQuery = MutableStateFlow("")
+        val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+        private val retryTrigger = MutableSharedFlow<Unit>(replay = 1, extraBufferCapacity = 1)
 
-    private val _retryTrigger = MutableSharedFlow<Unit>(replay = 1, extraBufferCapacity = 1)
+        @OptIn(ExperimentalCoroutinesApi::class)
+        val uiState: StateFlow<ProductListUiState> =
+            retryTrigger
+                .flatMapLatest {
+                    productRepository
+                        .getProducts()
+                        .map<ProductResponse, ProductListUiState> { ProductListUiState.Success(it) }
+                        .catch { emit(ProductListUiState.Error(it)) }
+                }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProductListUiState.Loading)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val uiState: StateFlow<ProductListUiState> = _retryTrigger
-        .flatMapLatest {
-            productRepository.getProducts()
-                .map<ProductResponse, ProductListUiState> { ProductListUiState.Success(it) }
-                .catch { emit(ProductListUiState.Error(it)) }
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProductListUiState.Loading)
-
-    val productItems: StateFlow<List<Product>> =
-        combine(uiState, _searchQuery) { currentUiState, query ->
-            when (currentUiState) {
-                is ProductListUiState.Success -> {
-                    val allProducts = currentUiState.data.data
-                    if (query.isBlank()) {
-                        allProducts
-                    } else {
-                        allProducts.filter { product ->
-                            product.martName.contains(query, ignoreCase = true)
+        val productItems: StateFlow<List<Product>> =
+            combine(uiState, _searchQuery) { currentUiState, query ->
+                when (currentUiState) {
+                    is ProductListUiState.Success -> {
+                        val allProducts = currentUiState.data.data
+                        if (query.isBlank()) {
+                            allProducts
+                        } else {
+                            allProducts.filter { product ->
+                                product.martName.contains(query, ignoreCase = true)
+                            }
                         }
                     }
-                }
 
-                else -> {
-                    emptyList()
+                    else -> {
+                        emptyList()
+                    }
                 }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList(),
+            )
+
+        init {
+            viewModelScope.launch {
+                retryTrigger.emit(value = Unit)
             }
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
 
-    init {
-        viewModelScope.launch {
-            _retryTrigger.emit(value = Unit)
+        /**
+         * 更新搜尋查詢。
+         * @param query 搜尋參數。
+         */
+        fun filterSearch(query: String) {
+            _searchQuery.value = query
         }
-    }
 
-    /**
-     * 更新搜尋查詢。
-     * @param query 搜尋參數。
-     */
-    fun filterSearch(query: String) {
-        _searchQuery.value = query
+        /**
+         * 重新讀取列表資料。
+         */
+        fun reload() =
+            viewModelScope.launch {
+                retryTrigger.emit(value = Unit)
+            }
     }
-
-    /**
-     * 重新讀取列表資料。
-     */
-    fun reload() = viewModelScope.launch {
-        _retryTrigger.emit(value = Unit)
-    }
-}

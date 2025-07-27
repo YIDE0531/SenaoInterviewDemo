@@ -17,25 +17,27 @@ import com.yite.senaoapp.R
 fun CustomSearchBar(
     modifier: Modifier = Modifier,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
 ) {
     CustomTextField(
         modifier = modifier,
         leadingIcon = {
             Icon(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .size(24.dp),
-                painter = painterResource(
-                    id = R.drawable.icon_search,
-                ),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 8.dp)
+                        .size(24.dp),
+                painter =
+                    painterResource(
+                        id = R.drawable.icon_search,
+                    ),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.colorScheme.secondary,
             )
         },
         placeholderText = stringResource(R.string.input_keyword),
         value = value,
         textStyle = MaterialTheme.typography.bodyLarge,
-        onValueChange = onValueChange
+        onValueChange = onValueChange,
     )
 }

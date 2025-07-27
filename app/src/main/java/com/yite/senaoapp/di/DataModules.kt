@@ -13,7 +13,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-
     @Singleton
     @Binds
     abstract fun bindTaskRepository(repository: DefaultProductRepository): ProductRepository
@@ -22,7 +21,6 @@ abstract class RepositoryModule {
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataSourceModule {
-
     @Singleton
     @Binds
     abstract fun bindNetworkDataSource(dataSource: ProductNetworkDataSource): NetworkDataSource

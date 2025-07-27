@@ -7,6 +7,5 @@ import kotlinx.coroutines.flow.Flow
  * Interface to the data layer.
  */
 interface ProductRepository {
-
     fun getProducts(): Flow<ProductResponse>
 }

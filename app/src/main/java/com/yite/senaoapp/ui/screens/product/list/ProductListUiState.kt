@@ -4,6 +4,12 @@ import com.yite.senaoapp.data.model.ProductResponse
 
 sealed interface ProductListUiState {
     object Loading : ProductListUiState
-    data class Error(val throwable: Throwable) : ProductListUiState
-    data class Success(val data: ProductResponse) : ProductListUiState
+
+    data class Error(
+        val throwable: Throwable,
+    ) : ProductListUiState
+
+    data class Success(
+        val data: ProductResponse,
+    ) : ProductListUiState
 }

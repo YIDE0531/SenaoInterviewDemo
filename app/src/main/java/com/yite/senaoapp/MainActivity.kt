@@ -33,21 +33,21 @@ class MainActivity : ComponentActivity() {
             val permission = "android.permission.POST_NOTIFICATIONS"
             if (ContextCompat.checkSelfPermission(
                     this,
-                    permission
+                    permission,
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 Timber.d("checkSelfPermission PERMISSION GRANTED")
             } else if (shouldShowRequestPermissionRationale(permission)) {
                 Timber.d("shouldShowRequestPermissionRationale PERMISSION PERMISSION_DENIED")
             } else {
-                val launcher = registerForActivityResult(
-                    ActivityResultContracts.RequestPermission()
-                ) { isGranted ->
-                    Timber.d("android.permission.POST_NOTIFICATIONS: $isGranted")
-                }
+                val launcher =
+                    registerForActivityResult(
+                        ActivityResultContracts.RequestPermission(),
+                    ) { isGranted ->
+                        Timber.d("android.permission.POST_NOTIFICATIONS: $isGranted")
+                    }
                 launcher.launch(permission)
             }
         }
     }
-
 }

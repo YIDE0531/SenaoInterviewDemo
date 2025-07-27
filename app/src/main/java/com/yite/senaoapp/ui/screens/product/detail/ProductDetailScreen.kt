@@ -57,7 +57,7 @@ fun ProductDetailScreen(
         productInfo = productInfo,
         onBack = onBack,
         onAddCart = onAddCart,
-        onFavoriteClick = onFavoriteClick
+        onFavoriteClick = onFavoriteClick,
     )
 }
 
@@ -68,25 +68,27 @@ fun ProductDetailContent(
     productInfo: Product,
     onBack: () -> Unit,
     onAddCart: (Product) -> Unit,
-    onFavoriteClick: (Product) -> Unit
+    onFavoriteClick: (Product) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
-        modifier = modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier =
+            modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                    scrolledContainerColor = MaterialTheme.colorScheme.primary,
-                ),
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                        scrolledContainerColor = MaterialTheme.colorScheme.primary,
+                    ),
                 title = {
                     Text(
                         stringResource(R.string.product_detail_title),
                         color = Color.White,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 navigationIcon = {
@@ -94,91 +96,104 @@ fun ProductDetailContent(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.icon_back_content_description),
-                            tint = Color.White
+                            tint = Color.White,
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
-        }
+        },
     ) { contentPadding ->
         Column(
-            modifier = Modifier
-                .padding(contentPadding)
-                .verticalScroll(rememberScrollState())
+            modifier =
+                Modifier
+                    .padding(contentPadding)
+                    .verticalScroll(rememberScrollState()),
         ) {
             AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
                 model = productInfo.imageUrl,
-                contentDescription = stringResource(R.string.product_image_content_description)
+                contentDescription = stringResource(R.string.product_image_content_description),
             )
             Text(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 8.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 8.dp),
                 text = stringResource(R.string.product_id, productInfo.martId),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.secondary,
             )
             Text(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 4.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 4.dp),
                 text = productInfo.martName,
                 color = MaterialTheme.colorScheme.onPrimary,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 8.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 8.dp),
             ) {
                 Text(
-                    modifier = Modifier
-                        .weight(1f),
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = price12BoldTextStyle.copy(
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        ) {
-                            append(stringResource(R.string.price_sign))
-                        }
-                        withStyle(
-                            style = priceTextBoldStyle18.copy(
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        ) {
-                            append(productInfo.getFormattedFinalPrice())
-                        }
-                    }
+                    modifier =
+                        Modifier
+                            .weight(1f),
+                    text =
+                        buildAnnotatedString {
+                            withStyle(
+                                style =
+                                    price12BoldTextStyle.copy(
+                                        color = MaterialTheme.colorScheme.error,
+                                    ),
+                            ) {
+                                append(stringResource(R.string.price_sign))
+                            }
+                            withStyle(
+                                style =
+                                    priceTextBoldStyle18.copy(
+                                        color = MaterialTheme.colorScheme.error,
+                                    ),
+                            ) {
+                                append(productInfo.getFormattedFinalPrice())
+                            }
+                        },
                 )
                 Icon(
-                    modifier = Modifier
-                        .padding(end = 8.dp)
-                        .size(24.dp)
-                        .noRippleClickable {
-                            onFavoriteClick.invoke(productInfo)
-                        },
-                    painter = painterResource(
-                        id = R.drawable.icon_favorite,
-                    ),
+                    modifier =
+                        Modifier
+                            .padding(end = 8.dp)
+                            .size(24.dp)
+                            .noRippleClickable {
+                                onFavoriteClick.invoke(productInfo)
+                            },
+                    painter =
+                        painterResource(
+                            id = R.drawable.icon_favorite,
+                        ),
                     contentDescription = stringResource(R.string.icon_favorite_content_description),
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = MaterialTheme.colorScheme.secondary,
                 )
                 Icon(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .noRippleClickable {
-                            onAddCart.invoke(productInfo)
-                        },
-                    painter = painterResource(
-                        id = R.drawable.icon_add_cart,
-                    ),
+                    modifier =
+                        Modifier
+                            .size(24.dp)
+                            .noRippleClickable {
+                                onAddCart.invoke(productInfo)
+                            },
+                    painter =
+                        painterResource(
+                            id = R.drawable.icon_add_cart,
+                        ),
                     contentDescription = stringResource(R.string.icon_add_cart_content_description),
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = MaterialTheme.colorScheme.secondary,
                 )
             }
         }
@@ -189,14 +204,14 @@ fun ProductDetailContent(
 @Composable
 fun LoadingScreenPreview(
     @PreviewParameter(PreviewParameterProduct::class, limit = 1)
-    productInfo: Product
+    productInfo: Product,
 ) {
     SenaoInterviewDemoTheme {
         ProductDetailContent(
             productInfo = productInfo,
             onBack = {},
             onAddCart = {},
-            onFavoriteClick = {}
+            onFavoriteClick = {},
         )
     }
 }

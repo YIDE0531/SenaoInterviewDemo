@@ -5,11 +5,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ProductNetworkDataSource @Inject constructor(
-    private val productApiService: ProductApiService
-) : NetworkDataSource {
-
-    override suspend fun getProducts(): ProductResponse {
-        return productApiService.getProducts()
+class ProductNetworkDataSource
+    @Inject
+    constructor(
+        private val productApiService: ProductApiService,
+    ) : NetworkDataSource {
+        override suspend fun getProducts(): ProductResponse = productApiService.getProducts()
     }
-}
