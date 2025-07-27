@@ -29,4 +29,4 @@
 
 ```bash
 ./gradlew ktlintCheck          # 檢查格式
-./gradlew testDebugUnitTest    # 執行單元測試
+./gradlew ktlintFormat         # 執行Format
