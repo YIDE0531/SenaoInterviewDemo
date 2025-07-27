@@ -22,7 +22,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.yite.senaoapp.CustomTestRunner"
     }
 
     buildTypes {
@@ -111,4 +111,15 @@ dependencies {
     // chucker方便查看api資料
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)
+
+    // unit test
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    androidTestImplementation(libs.hilt.android.testing)
+
+    // ui test
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.test.manifest)
+    androidTestImplementation(libs.androidx.navigation.testing)
 }

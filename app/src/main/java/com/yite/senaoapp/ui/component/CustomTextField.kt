@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 
 @Composable
@@ -24,7 +25,8 @@ fun CustomTextField(
     BasicTextField(
         modifier =
             modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag("MY_SEARCH_TAG"),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
